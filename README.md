@@ -3,13 +3,13 @@ A Pure CLI Script for Monitoring Crucial Information While Running Folding@Home.
 ###### Project Started: April 29, 2020
 <hr>
 
-![FAHView Screenshot](./docs/src/FAHView_screenshot.gif)
+![FAHView Screenshot](./docs/src/FAHView_screenshot.gif =200x100)
 
-## Current Stage
+## Current Stage :hammer:
 At the moment, this script is hard coded to work with my system setup only. Temperature values and folding progress will show up for any system with one CPU of any brand and two Nvidia GPUs. However, names of those device will likely be off.
 
 
-## TO-DO::pill:
+## TO-DO :pill:
 * Overall touch-up with formatting and color scheme.
 * Display donor name, team name, and ranks.
 * Dynamic coding ensuring cross-system compatibility.
@@ -17,4 +17,5 @@ At the moment, this script is hard coded to work with my system setup only. Temp
 * Exceptions Handling.
 * Compile and package into proper command.:package:
 
+## Notice :mega:
 Please feel free to make any contributions to this project as it is the first project delicated to headless Folding@Home monitoring.
