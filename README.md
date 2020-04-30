@@ -13,7 +13,6 @@ At the moment, this script is hard coded to work with my system setup only. Temp
 
 ## :pill: TO-DO
 * Overall touch-up with formatting and color scheme.
-* Display donor name, team name, and ranks.
 * Dynamic coding ensuring cross-system compatibility.
 * Combining the two files into one.
 * Exceptions Handling.
