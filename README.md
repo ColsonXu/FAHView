@@ -1,5 +1,6 @@
 # FAHView
 A Pure CLI Script for Monitoring Crucial Information While Running Folding@Home.
+###### Project Started: April 29, 2020
 <hr>
 
 ![FAHView Screenshot](src/FAHView_screenshot.gif)
@@ -10,7 +11,10 @@ At the moment, this script is hard coded to work with my system setup only. Temp
 
 ## TO-DO:
 * Overall touch-up with formatting and color scheme.
+* Display donor name, team name, and ranks.
 * Dynamic coding ensuring cross-system compatibility.
 * Combining the two files into one.
+* Exceptions Handling.
+* Compile into proper command.
 
 Please feel free to make any contributions to this project as it is the first project delicated to headless Folding@Home monitoring.
