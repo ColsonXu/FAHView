@@ -1,5 +1,5 @@
 # FAHView:syringe:
-A Pure CLI:floppy_disk: Script for Monitoring Crucial Information While Running Folding@Home. :desktop_computer::fire::+1:
+A Pure CLI Script for Monitoring Crucial Information While Running Folding@Home. :desktop_computer::floppy_disk::fire::+1:
 ###### Project Started: April 29, 2020
 <hr>
 
