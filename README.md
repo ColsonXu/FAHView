@@ -1,5 +1,5 @@
 # FAHView
-A Pure CLI Script for Monitoring Crucial Information While Running Folding@Home.
+A Pure CLI Script for Monitoring Crucial Information While Running Folding@Home. :computer::fire::+1:
 ###### Project Started: April 29, 2020
 <hr>
 
