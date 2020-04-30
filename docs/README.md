@@ -11,7 +11,7 @@ At the moment, this script is hard coded to work with my system setup only. Temp
 * Dynamic coding ensuring cross-system compatibility.
 * Combining the two files into one.
 * Exceptions Handling.
-* Compile and package into proper command.:package:
+* Compile and package into proper command.
 
 <br>
 
