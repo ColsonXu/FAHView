@@ -2,7 +2,6 @@
 A Pure CLI Script for Monitoring Crucial Information While Running Folding@Home. :desktop_computer: :floppy_disk: :fire: :+1:
 ###### Project Started: April 29, 2020
 <hr>
-<br>
 
 <img align="right" src="./docs/src/FAHView_screenshot.gif" height="200" width="464">
 
