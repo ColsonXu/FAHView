@@ -74,9 +74,11 @@ global_rank="`jq .rank $data` / `jq .total_users $data`"
 total_credits=`jq .credit $data`
 current_team=`jq '.teams[-1] | .name' $data`
 credits_towards_current_team=`jq '.teams[-1] | .credit' $data`
+cause=`cat /var/lib/fahclient/log.txt | grep "cause v="| grep -Po "'(?s)(.*)'" | tail -1`
 
 # Displaying processed data
 echo "Donor Name: $donor_name"
+echo "I am folding to cure $cause"
 echo "Total Credits: $total_credits"
 echo "Global Rank: $global_rank"
 echo "Current Team: $current_team"
