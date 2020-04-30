@@ -7,11 +7,11 @@
 # Getting GPU Temperature and Power Draw from 'nvidia-smi'
 # TO-DO: Parse data with something other than 'cut' to always get the acurate data
 
-# cpu_temp=`sensors | grep "Tdie" | cut -c16-19`
-# t1050=`nvidia-smi | grep "P0" | grep -o "[1-9][0-9]C"`
-# t1080=`nvidia-smi | grep "P2" | grep -o "[1-9][0-9]C"`
-# p1050=`nvidia-smi | grep "P0" | cut -c22-24`
-# p1080=`nvidia-smi | grep "P2" | cut -c21-31`
+cpu_temp=`sensors | grep "Tdie" | cut -c16-19`
+t1050=`nvidia-smi | grep "P0" | grep -o "[1-9][0-9]C"`
+t1080=`nvidia-smi | grep "P2" | grep -o "[1-9][0-9]C"`
+p1050=`nvidia-smi | grep "P0" | cut -c22-24`
+p1080=`nvidia-smi | grep "P2" | cut -c21-31`
 
 
 
