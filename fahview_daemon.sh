@@ -19,26 +19,43 @@ for ((i=0; i<$total_gpus; i++)); do
 	# Assign fan speed
 	declare "gpu_fan_$i"="`nvidia-smi -i $i --query-gpu=fan.speed --format=csv | tail -1`"
 	# Assign power draw
-	declare "temp_$i"="`nvidia-smi -i $i --query-gpu=power.draw --format=csv | tail -1`"
+	declare "gpu_power_$i"="`nvidia-smi -i $i --query-gpu=power.draw --format=csv | tail -1`"
 done
 
+# Loop through all GPU variables and display information
 for ((i=0; i<$total_gpus; i++)); do
+	# GPU name
 	gpu_name="gpu_name_$i"
 	echo "${!gpu_name}"
+
+	# Core temp
 	gpu_temp="gpu_temp_$i"
-	echo "${!gpu_temp}°C"
+	echo "Core Temp: ${!gpu_temp}°C"
+
+	# VRAM temp
+	gpu_mem_temp="gpu_mem_temp_$i"
+	echo "VRAM Temp: ${!gpu_mem_temp}"
+
+	# GPU fan (percentage)
+	gpu_fan="gpu_fan_$i"
+	echo "GPU Fan Speed: ${!gpu_fan}%"
+
+	# GPU power draw
+	gpu_power="gpu_power_$i"
+	echo "GPU Power Draw: ${!gpu_power}"
+	echo
 done
 
 
-echo  "+------------------------------------------+"
-echo  "|     Dev     |     Temp     |    Power    |"
-echo  "|=============|==============|=============|"
-echo  "|     CPU     |    $cpu_temp°C    |     N/A     |"
-echo  "|-------------|--------------|-------------|"
-echo  "| GTX 1050 Ti |     $t1050°C     |     $p1050     |"
-echo  "|-------------|--------------|-------------|"
-echo  "| GTX 1080 Ti |     $t1080°C     | $p1080 |"
-echo  "+------------------------------------------+"
+# echo  "+------------------------------------------+"
+# echo  "|     Dev     |     Temp     |    Power    |"
+# echo  "|=============|==============|=============|"
+# echo  "|     CPU     |    $cpu_temp°C    |     N/A     |"
+# echo  "|-------------|--------------|-------------|"
+# echo  "| GTX 1050 Ti |     $t1050°C     |     $p1050     |"
+# echo  "|-------------|--------------|-------------|"
+# echo  "| GTX 1080 Ti |     $t1080°C     | $p1080 |"
+# echo  "+------------------------------------------+"
 echo
 echo
 
@@ -69,11 +86,11 @@ echo
 
 #################### Folding Progress ####################
 # Getting FAHClient Folding Progress from Log File
-FS0=`cat /var/lib/fahclient/log.txt | grep "FS00" | grep -Po "[1-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
-FS1=`cat /var/lib/fahclient/log.txt | grep "FS01" | grep -Po "[1-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
-FS2=`cat /var/lib/fahclient/log.txt | grep "FS02" | grep -Po "[1-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
+FS0=`cat /var/lib/fahclient/log.txt | grep "FS00" | grep -Po "[0-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
+FS1=`cat /var/lib/fahclient/log.txt | grep "FS01" | grep -Po "[0-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
+FS2=`cat /var/lib/fahclient/log.txt | grep "FS02" | grep -Po "[0-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
 
-
+# TO-DO: Progress bar error when current progress is 0%
 prog() {
 	local w=50 p=$1;	shift
 	# Assigning Device Names
