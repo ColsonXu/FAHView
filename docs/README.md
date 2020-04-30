@@ -1,7 +1,3 @@
-# FAHView
-A Pure CLI Script for Monitoring Crucial Information While Running Folding@Home.
-<hr>
-
 ![FAHView Screenshot](./src/FAHView_screenshot.gif)
 
 ## Current Stage
