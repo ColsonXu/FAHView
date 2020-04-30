@@ -5,14 +5,29 @@
 #################### Temperature ####################
 # Getting CPU Temperature from 'lm-sensors'
 # Getting GPU Temperature and Power Draw from 'nvidia-smi'
-# TO-DO: Parse data with something other than 'cut' to always get the acurate data
 
-# cpu_temp=`sensors | grep "Tdie" | cut -c16-19`
-# t1050=`nvidia-smi | grep "P0" | grep -o "[1-9][0-9]C"`
-# t1080=`nvidia-smi | grep "P2" | grep -o "[1-9][0-9]C"`
-# p1050=`nvidia-smi | grep "P0" | cut -c22-24`
-# p1080=`nvidia-smi | grep "P2" | cut -c21-31`
+total_gpus=`nvidia-smi --query-gpu=count --format=csv | tail -1`
 
+# Loop though each GPUs and assign values
+for ((i=0; i<$total_gpus; i++)); do
+	# Assign name
+	declare "gpu_name_$i"="`nvidia-smi -i $i --query-gpu=name --format=csv | tail -1`"
+	# Assign GPU temp
+	declare "gpu_temp_$i"="`nvidia-smi -i $i --query-gpu=temperature.gpu --format=csv | tail -1`"
+	# Assign memory temp
+	declare "gpu_mem_temp_$i"="`nvidia-smi -i $i --query-gpu=temperature.memory --format=csv | tail -1`"
+	# Assign fan speed
+	declare "gpu_fan_$i"="`nvidia-smi -i $i --query-gpu=fan.speed --format=csv | tail -1`"
+	# Assign power draw
+	declare "temp_$i"="`nvidia-smi -i $i --query-gpu=power.draw --format=csv | tail -1`"
+done
+
+for ((i=0; i<$total_gpus; i++)); do
+	gpu_name="gpu_name_$i"
+	echo "${!gpu_name}"
+	gpu_temp="gpu_temp_$i"
+	echo "${!gpu_temp}°C"
+done
 
 
 echo  "+------------------------------------------+"
@@ -54,22 +69,19 @@ echo
 
 #################### Folding Progress ####################
 # Getting FAHClient Folding Progress from Log File
-FS0=`cat /var/lib/fahclient/log.txt | grep "FS00" | grep -Po "[1-9][0-9]?%|100%" | tail -n 1 | grep -Po "[1-9][0-9]?|100"`
-FS1=`cat /var/lib/fahclient/log.txt | grep "FS01" | grep -Po "[1-9][0-9]?%|100%" | tail -n 1 | grep -Po "[1-9][0-9]?|100"`
-FS2=`cat /var/lib/fahclient/log.txt | grep "FS02" | grep -Po "[1-9][0-9]?%|100%" | tail -n 1 | grep -Po "[1-9][0-9]?|100"`
+FS0=`cat /var/lib/fahclient/log.txt | grep "FS00" | grep -Po "[1-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
+FS1=`cat /var/lib/fahclient/log.txt | grep "FS01" | grep -Po "[1-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
+FS2=`cat /var/lib/fahclient/log.txt | grep "FS02" | grep -Po "[1-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
 
 
 prog() {
 	local w=50 p=$1;	shift
 	# Assigning Device Names
-	if [ $p == $FS0 ]
-	then
+	if [ $p == $FS0 ]; then
 		FS="Ryzen 5 1600"
-	elif [ $p == $FS1 ]
-	then
+	elif [ $p == $FS1 ]; then
 		FS=" GTX 1050 Ti"
-	elif [ $p == $FS2 ]
-	then
+	elif [ $p == $FS2 ]; then
 		FS=" GTX 1080 Ti"
 	fi
 	# Displaying Progress Bar
@@ -81,4 +93,3 @@ prog() {
 prog $FS0
 prog $FS1
 prog $FS2
-
