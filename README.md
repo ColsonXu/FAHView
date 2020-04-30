@@ -14,5 +14,6 @@ At the moment, this script is hard coded to work with my system setup only. Temp
 * Dynamic coding ensuring cross-system compatibility.
 * Combining the two files into one.
 * Exceptions Handling.
+* Compile into proper command.
 
 Please feel free to make any contributions to this project as it is the first project delicated to headless Folding@Home monitoring.
