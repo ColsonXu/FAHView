@@ -61,8 +61,7 @@ echo
 
 
 #################### Folding Identity ####################
-# TO-DO: Make donor_name dynamic
-donor_name="colsonxu"
+donor_name=`cat /var/lib/fahclient/log.txt | grep "user v="| grep -Po "'(?s)(.*)'" | tail -1`
 data="/tmp/fahview.tmp"
 # Getting data using Folding@home Web API
 # Stroing gathered data in /tmp
