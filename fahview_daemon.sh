@@ -38,7 +38,7 @@ for ((i=0; i<$total_gpus; i++)); do
 
 	# GPU fan (percentage)
 	gpu_fan="gpu_fan_$i"
-	echo "GPU Fan Speed: ${!gpu_fan}%"
+	echo "GPU Fan Speed: ${!gpu_fan}"
 
 	# GPU power draw
 	gpu_power="gpu_power_$i"
