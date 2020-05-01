@@ -12,6 +12,7 @@ At the moment, this script is hard coded to work with my system setup only. Temp
 <br>
 
 ## :pill: TO-DO
+- [ ] Rewrite the code to make API request less frequently.
 - [ ] Overall touch-up with formatting and color scheme.
 - [x] Display donor name, team name, and ranks.
 - [ ] Dynamic coding ensuring cross-system compatibility.
