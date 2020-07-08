@@ -47,12 +47,35 @@ for ((i=0; i<$total_gpus; i++)); do
 done
 
 
+print_table() {
+	perl -MText::ASCIITable -e '
+		$t = Text::ASCIITable->new({drawRowLine => 1});
+		while (defined($c = shift @ARGV) and $c ne "--") {
+			push @header, $c;
+			$cols++
+		}
+		$t->setCols(@header);
+		$rows = @ARGV / $cols;
+		for ($i = 0; $i < $rows; $i++) {
+			for ($j = 0; $j < $cols; $j++) {
+				$cell[$i][$j] = $ARGV[$j * $rows + $i]
+			}
+		}
+		$t->addRow(\@cell);
+		print $t' -- "$@"
+}
+
+# print_table "Device" "Mem Temp"    "Core Temp" -- \
+#             "123"   "234" "345"
+
+
+
 # echo  "+------------------------------------------+"
 # echo  "|     Dev     |     Temp     |    Power    |"
 # echo  "|=============|==============|=============|"
-# echo  "|     CPU     |    $cpu_temp°C    |     N/A     |"
+# echo  "|$(printf %-20s "CPU")|    $cpu_temp°C    |     N/A     |"
 # echo  "|-------------|--------------|-------------|"
-# echo  "| GTX 1050 Ti |     $t1050°C     |     $p1050     |"
+# echo  "|$(printf %-20s "$gpu_name_0")|     $t1050°C     |     $p1050     |"
 # echo  "|-------------|--------------|-------------|"
 # echo  "| GTX 1080 Ti |     $t1080°C     | $p1080 |"
 # echo  "+------------------------------------------+"
@@ -61,7 +84,8 @@ echo
 
 
 #################### Folding Identity ####################
-donor_name=`cat /var/lib/fahclient/log.txt | grep "user v="| grep -Po "'(?s)(.*)'" | tail -1`
+donor_name=`cat /var/lib/fahclient/log.txt | grep "user v="| grep -Po "'(?s)(.*)'" | tail -1 | tr -d "'"`
+
 data="/tmp/fahview.tmp"
 # Getting data using Folding@home Web API
 # Stroing gathered data in /tmp
@@ -70,10 +94,10 @@ curl -so $data "https://stats.foldingathome.org/api/donor/$donor_name"
 
 # Processing raw data
 global_rank="`jq .rank $data` / `jq .total_users $data`"
-total_credits=`jq .credit $data`
+total_credits=`jq .credit $data | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'`
 current_team=`jq '.teams[-1] | .name' $data`
-credits_towards_current_team=`jq '.teams[-1] | .credit' $data`
-cause=`cat /var/lib/fahclient/log.txt | grep "cause v="| grep -Po "'(?s)(.*)'" | tail -1`
+credits_towards_current_team=`jq '.teams[-1] | .credit' $data | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'`
+cause=`cat /var/lib/fahclient/log.txt | grep "cause v="| grep -Po "'(?s)(.*)'" | tail -1 | tr -d "'"`
 
 # Displaying processed data
 echo "Donor Name: $donor_name"
@@ -111,3 +135,6 @@ prog() {
 prog $FS0
 prog $FS1
 prog $FS2
+
+# Clean up temp file
+rm /tmp/fahview.tmp
