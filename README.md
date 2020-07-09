@@ -7,7 +7,7 @@ A Pure CLI Script for Monitoring Crucial Information While Running Folding@Home.
 <img align="right" src="./docs/src/FAHView_screenshot.gif" height="200" width="464">
 
 ## :hammer: Current Build
-At the moment, this script is hard coded to work with my system setup only. Temperature values and folding progress will show up for any system with one CPU of any brand and two Nvidia GPUs. However, names of those device will likely be off.
+I have merged branch 'dynamic-gpu' with master, the current code can detect CPU and GPUs. However, if not all hardwares are added to folding slot, the progress bar may display mixed up info.
 
 ## Update
 GPU auto-detection feature coming soon!
