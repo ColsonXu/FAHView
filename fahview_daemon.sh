@@ -15,7 +15,7 @@ for ((i=0; i<$total_gpus; i++)); do
 	# Assign GPU temp
 	declare "gpu_temp_$i"="`nvidia-smi -i $i --query-gpu=temperature.gpu --format=csv | tail -1`"
 	# Assign memory temp
-	declare "gpu_mem_temp_$i"="`nvidia-smi -i $i --query-gpu=temperature.memory --format=csv | tail -1`"
+	# declare "gpu_mem_temp_$i"="`nvidia-smi -i $i --query-gpu=temperature.memory --format=csv | tail -1`"
 	# Assign fan speed
 	declare "gpu_fan_$i"="`nvidia-smi -i $i --query-gpu=fan.speed --format=csv | tail -1`"
 	# Assign power draw
@@ -33,8 +33,8 @@ for ((i=0; i<$total_gpus; i++)); do
 	echo "Core Temp: ${!gpu_temp}°C"
 
 	# VRAM temp
-	gpu_mem_temp="gpu_mem_temp_$i"
-	echo "VRAM Temp: ${!gpu_mem_temp}"
+	# gpu_mem_temp="gpu_mem_temp_$i"
+	# echo "VRAM Temp: ${!gpu_mem_temp}"
 
 	# GPU fan (percentage)
 	gpu_fan="gpu_fan_$i"
@@ -84,20 +84,20 @@ echo
 
 
 #################### Folding Identity ####################
-donor_name=`cat /var/lib/fahclient/log.txt | grep "user v="| grep -Po "'(?s)(.*)'" | tail -1 | tr -d "'"`
+donor_name=`cat /opt/foldingathome/log.txt | grep "user v="| grep -Po "'(?s)(.*)'" | tail -1 | tr -d "'"`
 
 data="/tmp/fahview.tmp"
 # Getting data using Folding@home Web API
 # Stroing gathered data in /tmp
 # Potential issue with frequent API request <CAUTION!>
-curl -so $data "https://stats.foldingathome.org/api/donor/$donor_name"
+curl -so $data "https://api2.foldingathome.org/user/$donor_name"
 
 # Processing raw data
-global_rank="`jq .rank $data` / `jq .total_users $data`"
-total_credits=`jq .credit $data | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'`
+global_rank="`jq .rank $data | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'` / `curl -s https://api2.foldingathome.org/user-count | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'`"
+total_credits=`jq .score $data | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'`
 current_team=`jq '.teams[-1] | .name' $data`
-credits_towards_current_team=`jq '.teams[-1] | .credit' $data | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'`
-cause=`cat /var/lib/fahclient/log.txt | grep "cause v="| grep -Po "'(?s)(.*)'" | tail -1 | tr -d "'"`
+credits_towards_current_team=`jq '.teams[-1] | .score' $data | sed ':a;s/\B[0-9]\{3\}\>/,&/;ta'`
+cause=`cat /opt/foldingathome/log.txt | grep "cause v="| grep -Po "'(?s)(.*)'" | tail -1 | tr -d "'"`
 
 # Displaying processed data
 echo "Donor Name: $donor_name"
@@ -111,9 +111,9 @@ echo
 
 #################### Folding Progress ####################
 # Getting FAHClient Folding Progress from Log File
-FS0=`cat /var/lib/fahclient/log.txt | grep "FS00" | grep -Po "[0-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
-FS1=`cat /var/lib/fahclient/log.txt | grep "FS01" | grep -Po "[0-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
-FS2=`cat /var/lib/fahclient/log.txt | grep "FS02" | grep -Po "[0-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
+FS0=`cat /opt/foldingathome/log.txt | grep "FS00" | grep -Po "[0-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
+FS1=`cat /opt/foldingathome/log.txt | grep "FS01" | grep -Po "[0-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
+# FS2=`cat /opt/foldingathome/log.txt | grep "FS02" | grep -Po "[0-9][0-9]?%|100%" | tail -1 | grep -Po "[1-9][0-9]?|100"`
 
 # TO-DO: Progress bar error when current progress is 0%
 prog() {
@@ -121,9 +121,9 @@ prog() {
 	# Assigning Device Names
 	if [ $p == $FS0 ]; then
 		FS="Ryzen 5 1600"
+	# elif [ $p == $FS1 ]; then
+	# 	FS=" GTX 1050 Ti"
 	elif [ $p == $FS1 ]; then
-		FS=" GTX 1050 Ti"
-	elif [ $p == $FS2 ]; then
 		FS=" GTX 1080 Ti"
 	fi
 	# Displaying Progress Bar
@@ -134,7 +134,7 @@ prog() {
 
 prog $FS0
 prog $FS1
-prog $FS2
+# prog $FS2
 
 # Clean up temp file
 rm /tmp/fahview.tmp

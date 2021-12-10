@@ -1,4 +1,4 @@
 #!/bin/bash
 # hardware_probe.sh Auto Refresh
 
-watch -n 1 /usr/local/bin/fahview_daemon.sh
+watch -n 1 ./fahview_daemon.sh
